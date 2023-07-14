@@ -42,7 +42,6 @@ class DatabaseSeeder extends Seeder
             DB::table('accounts')->insert([
                 'client_id' => $faker->numberBetween(1, 20),
                 'iban' => generateLithuanianIBAN(),
-                //'iban' => $faker->iban('LT'),
                 'balance' => $faker->randomFloat(2, 0, 100000)
             ]);
         }

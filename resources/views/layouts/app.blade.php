@@ -24,7 +24,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('/clients') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -46,24 +46,23 @@
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                Colors
+                                Clients
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
 
-                                <a class="dropdown-item" href=""> 
-                                    {{-- {{ route('colors-index') }} --}}
-                                    Colors List
+                                <a class="dropdown-item" href=" {{ route('client-index') }}">
+
+                                    Clients List
                                 </a>
-                                <a class="dropdown-item" href="">
-                                    {{-- {{ route('colors-create') }} --}}
-                                    Colors Create
+                                <a class="dropdown-item" href="{{ route('client-create') }}">
+                                    Add Client
                                 </a>
 
                             </div>
                         </li>
 
-                        
+
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -126,8 +125,8 @@
         </nav>
 
         <main class="py-4">
-            {{-- @include('msg.message')
-            @include('msg.errors') --}}
+            @include('msg.messages')
+            @include('msg.errors')
             @yield('content')
         </main>
     </div>

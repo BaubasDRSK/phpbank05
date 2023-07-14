@@ -15,7 +15,7 @@
                                     <div class="d-flex">
                                         <div class="ms-2">
                                             <div>{{$client->fname}} {{$client->lname}} / Total accounts [{{$client->accounts()->count()}}] / Total balance [{{$client->accounts()->sum('balance')}}]</div>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -26,7 +26,7 @@
                                     </a>
                                     <a class="btn btn-danger" href="" >
                                         {{-- {{route('authors-delete', $author)}} --}}
-                                        Delete    
+                                        Delete
                                     </a>
                                 </div>
                             </div>
@@ -37,11 +37,11 @@
                         </li>
                         @endforelse
                     </ul>
-  
+
                 </div>
             </div>
         </div>
     </div>
-    {{ $clients->links() }} 
+    <div class="mt-3">{{ $clients->links() }}</div>
 </div>
 @endsection
