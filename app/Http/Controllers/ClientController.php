@@ -130,7 +130,9 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        //
+        return view('clients.edit', [
+            'client' => $client
+        ]);
     }
 
     /**
@@ -138,7 +140,7 @@ class ClientController extends Controller
      */
     public function edit(Client $client)
     {
-        //
+
     }
 
     /**
@@ -146,7 +148,40 @@ class ClientController extends Controller
      */
     public function update(Request $request, Client $client)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'lname' => 'required|max:50|min:3|alpha',
+
+                'fname' => 'required|max:50|min:3|alpha'
+            ],
+            [
+                'lname.required' => 'Please enter last name!',
+                'lname.max' => 'Looks like last name is too long!',
+                'lname.min' => 'Is Your  last name so short?',
+                'lname.regex' => 'Check the last name again!',
+
+                'fname.required' => 'Please enter first name!',
+                'fname.max' => 'Looks like name is too long!',
+                'fname.min' => 'Is Your name so short?',
+                'fname.regex' => 'Check the name again!'
+
+                ]);
+
+        if ($validator->fails()) {
+            $request->flash();
+            return redirect()->back()->withErrors($validator);
+        }
+
+        $client->fname = $request->fname;
+        $client->lname = $request->lname;
+        // $client->pid = $request->pid;
+        // $client->info = $request->info ?? '';
+        $client->save();
+        return redirect()
+        ->route('client-index')
+        ->with('success', 'Client has been edited!');
+
     }
 
     /**

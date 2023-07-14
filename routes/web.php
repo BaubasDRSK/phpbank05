@@ -27,10 +27,15 @@ Auth::routes();
 Route::prefix('clients')->name('client-')->group(function () {
 
     Route::get('/', [Clnt::class, 'index'])->name('index');
+
     Route::get('/create',[Clnt::class, 'create'])->name('create');
-    ROute::post('/', [Clnt::class, 'store'])->name('store');
-    // Route::get('/create', [Clnt::class, 'create'])->name('create'); // GET /colors/create from URL:  colors/create Name: colors-create
-    // Route::post('/', [Clnt::class, 'store'])->name('store'); // POST /colors from URL:  colors Name: colors-store
+    Route::post('/', [Clnt::class, 'store'])->name('store');
+
+    Route::get('/edit/{client}' ,[Clnt::class, 'show'])->name('edit');
+    Route::put('/{client}', [Clnt::class, 'update'])->name('update');
+
+    //Route::get('/delete/client/{client}' ,[Client::class, 'delete'])->name('delete');
+
     // Route::get('/delete/{color}', [Clnt::class, 'delete'])->name('delete'); // GET /colors/delete/{color} from URL:  colors/delete/{color} Name: colors-delete
     // Route::delete('/{color}', [Clnt::class, 'destroy'])->name('destroy'); // DELETE /colors/{color} from URL:  colors/{color} Name: colors-destroy
     // Route::get('/edit/{color}', [Clnt::class, 'edit'])->name('edit'); // GET /colors/edit/{color} from URL:  colors/edit/{color} Name: colors-edit

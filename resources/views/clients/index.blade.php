@@ -8,6 +8,11 @@
                 <div class="card-body">
                     <h5 class="card-title">Clients List</h5>
                     <ul class="list-group list-group-flush">
+                        <?php
+                            $actualPage = $_GET["page"]?? '';
+                            echo ($actualPage);
+                        ?>
+
                         @forelse($clients as $client)
                         <li class="list-group-item">
                             <div class="d-flex justify-content-between">
@@ -20,11 +25,11 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <a class="btn btn-success" href="" >
+                                    <a class="btn btn-success" href="{{route('client-edit',['client'=>$client, 'actualPage'=>$actualPage])}}" >
                                         {{-- {{route('authors-edit', $author)}} --}}
                                         Edit
                                     </a>
-                                    <a class="btn btn-danger" href="" >
+                                    <a class="btn btn-danger" href="{{route('client-edit', $client)}}" >
                                         {{-- {{route('authors-delete', $author)}} --}}
                                         Delete
                                     </a>
