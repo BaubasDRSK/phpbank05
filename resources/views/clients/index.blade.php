@@ -33,7 +33,7 @@
                         </li>
                         @empty
                         <li class="list-group-item">
-                            <p class="text-center">No authors</p>
+                            <p class="text-center">No clients</p>
                         </li>
                         @endforelse
                     </ul>

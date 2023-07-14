@@ -46,7 +46,6 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        //  PID regex('/^(3[0-9]{2}|4[0-9]{2}|6[0-9]{2}|5[0-9]{2})(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])\d{4}$/', $pid)){
 
 
         // \App\Models\User::factory(10)->create();
