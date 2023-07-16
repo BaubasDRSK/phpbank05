@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\MOdels\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class AccountController extends Controller
 {
@@ -18,9 +21,18 @@ class AccountController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $client = Client::find($request->client);
+        
+        $account = new Account;
+        $account->client_id = $client->id;
+        $account->iban = generateLithuanianIBAN();
+        $account->balance = 0;
+        $account->save();
+        return redirect()->back()
+        ->with('success', 'New account was added!');
+       
     }
 
     /**
@@ -42,9 +54,15 @@ class AccountController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Account $account)
+    public function edit(Account $account, Client $client)
     {
-        //
+        return view('accounts.edit',
+          [
+            'account'=>$account,
+            'client'=>$client
+          ]  
+          );
+        
     }
 
     /**
@@ -52,7 +70,33 @@ class AccountController extends Controller
      */
     public function update(Request $request, Account $account)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),[
+                'amount' => 'required|regex:/^\d+(\.\d{1,2})?$/'
+            ],
+            [
+                'amount.required' => '??',
+                'amount.integer' => 'Check amount'
+            ]);
+
+            if ($validator->fails()) {
+                $request->flash();
+                return redirect()->back()->withErrors($validator);
+            }
+
+            if ($request->add){
+                $newAmount = $account->balance + $request->amount;
+            }
+
+            if ($request->minus && $request->amount <= $account->balance){
+                $newAmount = $account->balance - $request->amount;
+            }
+    
+            $account->balance = $newAmount;
+            $account->save();
+            return redirect()
+            ->back()
+            ->with('success', 'New color has been added!');
     }
 
     /**

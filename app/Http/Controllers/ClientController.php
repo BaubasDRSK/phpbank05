@@ -6,6 +6,8 @@ use App\Models\Client;
 use App\Models\Account;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Collection;
+
 
 
 class ClientController extends Controller
@@ -82,6 +84,14 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
+        $clients = Client::all();
+       if ($clients->where('pid', '=', $request->pid)->count()){
+        $request->flash();
+        return redirect()
+        ->back()
+        ->withErrors(['This personal code already exist']);
+        die();
+       }
         $validator = Validator::make(
             $request->all(),
             [
@@ -128,25 +138,30 @@ class ClientController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Client $client)
+    public function show(Client $client, Int $page)
     {
-        return view('clients.edit', [
-            'client' => $client
-        ]);
+       
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Client $client)
+    public function edit(Client $client, Int $page)
     {
+        // $page = $page ?? 1;
+        $accounts = $client->accounts()->paginate(5)->withQueryString();
 
+        return view('clients.edit', [
+            'client' => $client,
+            'page'=>$page,
+            'accounts'=>$accounts
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Client $client)
+    public function update(Request $request, Client $client, Int $page)
     {
         $validator = Validator::make(
             $request->all(),
@@ -175,13 +190,28 @@ class ClientController extends Controller
 
         $client->fname = $request->fname;
         $client->lname = $request->lname;
-        // $client->pid = $request->pid;
-        // $client->info = $request->info ?? '';
         $client->save();
         return redirect()
-        ->route('client-index')
-        ->with('success', 'Client has been edited!');
+        ->route('client-index', ['page'=>$page])
+        ->with('success', 'Details was saved!');
+    }
 
+
+     /**
+     * Open delete form.
+     */
+    public function delete(Client $client)
+    {    
+        $accounts = $client->accounts()->get();
+        $countZeroBalance = $accounts->where('balance', '!=', 0)->count();
+        if ($countZeroBalance == 0) {
+                    return view('clients.delete', [
+                        'client' => $client
+                        // 'page'=>$page
+                    ]);
+                    die();
+                }
+        return redirect()->back()->withErrors(['Client can not be deltete. Non 0 accounts exist']);
     }
 
     /**
@@ -189,6 +219,16 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
-        //
+        $accounts = $client->accounts();
+        if ($accounts->count() != 0) {
+            $accounts->each(function($item){
+                $deleteAcc = Account::find($item['id']);
+                $deleteAcc->delete();
+            });
+        }
+        $client->delete();
+        return redirect()
+        ->route('client-index')
+        ->with('success', 'Client has been deleted!');
     }
 }

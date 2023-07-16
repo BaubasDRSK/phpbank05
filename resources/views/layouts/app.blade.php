@@ -17,6 +17,14 @@
 
 
     <!-- Scripts -->
+    <!-- CSS -->
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" > --}}
+
+    <!-- Script -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script> --}}
+
+
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
@@ -129,7 +137,7 @@
             @include('msg.errors')
             @yield('content')
         </main>
-    </div>
+    @stack('script')
 </body>
 
 </html>
