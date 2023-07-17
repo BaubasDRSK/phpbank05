@@ -18,21 +18,24 @@ class ClientController extends Controller
     public function index(Request $request)
     {
         // $clients = Client::all();
-
         $sortBy = $request->sort_by ?? '';
         $orderBy = $request->order_by ?? '';
-        if ($orderBy && !in_array($orderBy, ['asc', 'desc'])) {
-            $orderBy = '';
-        }
-        $filterBy = $request->filter_by ?? '';
-        $filterValue = $request->filter_value ?? '0';
+        if ($orderBy && !in_array($orderBy, ['asc', 'desc'])) { $orderBy = ''; }
+
+        $filterBy = $request->searchBy ?? 'fname';
+        $filterValue = $request->searchFor ?? '';
+
         $perPage = (int) $request->per_page ?? 5;
         $perPage = $perPage == 0 ? 5 : $perPage;
 
         if ($request->s) {
-
-            $clients = Client::where('lname', 'like', '%'.$request->s.'%')->paginate($perPage)->withQueryString();
-
+            if ($filterBy == 'iban'){
+                $accounts = Account::where($filterBy, 'like', '%'.$filterValue.'%')->get();
+                $ids = $accounts->pluck('client_id')->toArray();
+                $clients = Client::whereIn('id', $ids)->paginate($perPage)->withQueryString();
+                // $clients = Client::where('lname','like','%')->paginate($perPage)->withQueryString();
+            }else {
+            $clients = Client::where($filterBy, 'like', '%'.$filterValue.'%')->paginate($perPage)->withQueryString();}
         } else {
 
             // $clients = Client::all();
@@ -58,7 +61,7 @@ class ClientController extends Controller
 
 
 
-
+        $request->flash();
         return view('clients.index',
         [
             'clients' => $clients,
@@ -140,7 +143,7 @@ class ClientController extends Controller
      */
     public function show(Client $client, Int $page)
     {
-       
+
     }
 
     /**
@@ -201,7 +204,7 @@ class ClientController extends Controller
      * Open delete form.
      */
     public function delete(Client $client)
-    {    
+    {
         $accounts = $client->accounts()->get();
         $countZeroBalance = $accounts->where('balance', '!=', 0)->count();
         if ($countZeroBalance == 0) {
