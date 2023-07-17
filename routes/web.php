@@ -29,6 +29,7 @@ Auth::routes();
 Route::prefix('clients')->name('client-')->group(function () {
 
     Route::get('/', [Clnt::class, 'index'])->name('index');
+    Route::post('/', [Clnt::class, 'index'])->name('index ');
 
     Route::get('/create',[Clnt::class, 'create'])->name('create');
     Route::post('/', [Clnt::class, 'store'])->name('store');
@@ -46,7 +47,7 @@ Route::prefix('accounts')->name('account-')->group(function () {
 
     Route::get('/create/{client}&{page}',[Acc::class, 'create'])->name('create');
 
-    
+
     Route::get('/edit/{account}&{client}' ,[Acc::class, 'edit'])->name('edit');
     Route::put('/{account}', [Acc::class, 'update'])->name('update');
 
