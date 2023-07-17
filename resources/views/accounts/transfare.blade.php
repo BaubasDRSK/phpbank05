@@ -15,6 +15,7 @@
 
                                     <div class="input mb-4">
                                         <label class="mr-3" for="fname">Transfare from</label>
+                                        <p class="mr-3">Curent balance: {{$account->balance}}</p>
                                         {{-- <img src="/img/person.svg" alt="fname"> --}}
                                         <p class="form-control">{{$account->iban}} </p>
                                     </div>

@@ -7,6 +7,7 @@ use App\MOdels\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+use function PHPUnit\Framework\isNull;
 
 class AccountController extends Controller
 {
@@ -128,8 +129,38 @@ class AccountController extends Controller
 
     public function execute(Account $account, Request $request, Client $client)
     {
-        echo ($account->iban."<br>");
-        echo ($request->iban2."<br>");
-        echo ($request->amount."<br>");
+        $validator = Validator::make(
+            $request->all(),[
+                'amount' => 'required|regex:/^\d+(\.\d{1,2})?$/',
+                'iban2' => 'required|regex:/^LT\d{16}/'
+            ],
+            [
+                'amount.required' => '??',
+                'amount.regex' => 'Check amount',
+                'iban2.required' => '??',
+                'iban2.regex' => 'Check IBAN'
+            ]);
+
+            if ($validator->fails()) {
+                $request->flash();
+                return redirect()->back()->withErrors($validator);
+            }
+
+            $account2 = Account::where('iban','=',$request->iban2)->first();
+
+            if (is_null($account2)){
+                return redirect()->back()->withErrors('Recievers Account does not exist!');
+            }
+
+            if ($account->balance >= $request->amount){
+                $account->balance -= $request->amount;
+                $account2->balance += $request->amount;
+                $account->save();
+                $account2->save();
+                return redirect()->back()->with('success', 'Funds where transfared!');
+            }
+            return redirect()->back()->withErrors('Balance is not sufficient');
     }
 }
+
+
