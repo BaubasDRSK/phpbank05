@@ -67,6 +67,9 @@
                                                 </div>
                                             </div>
                                             <div>
+                                                <a class="btn btn-primary" href="{{route('account-transfare', ['account'=>$account, 'client'=>$client])}}" >
+                                                    Transfare
+                                                </a>
                                                 <a class="btn btn-success" href="{{route('account-edit', ['account'=>$account, 'client'=>$client])}}" >
                                                     Edit
                                                 </a>

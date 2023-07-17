@@ -115,4 +115,21 @@ class AccountController extends Controller
     {
         //
     }
+
+    public function transfare(Account $account, Client $client)
+    {
+        return view('accounts.transfare',
+        [
+          'account'=>$account,
+          'client' => $client
+        ]
+        );
+    }
+
+    public function execute(Account $account, Request $request, Client $client)
+    {
+        echo ($account->iban."<br>");
+        echo ($request->iban2."<br>");
+        echo ($request->amount."<br>");
+    }
 }

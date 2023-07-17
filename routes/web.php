@@ -53,6 +53,9 @@ Route::prefix('accounts')->name('account-')->group(function () {
 
     Route::get('/delete/{account}' ,[Acc::class, 'delete'])->name('delete');
     //Route::delete('/{client}', [Clnt::class, 'destroy'])->name('destroy');
+
+    Route::get('/transfare/{account}/{client}', [Acc::class, 'transfare'])->name('transfare');
+    Route::post('/transfare/{account}/{client}', [Acc::class, 'execute'])->name('execute');
 });
 
 
