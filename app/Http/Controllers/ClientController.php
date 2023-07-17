@@ -33,7 +33,6 @@ class ClientController extends Controller
                 $accounts = Account::where($filterBy, 'like', '%'.$filterValue.'%')->get();
                 $ids = $accounts->pluck('client_id')->toArray();
                 $clients = Client::whereIn('id', $ids)->paginate($perPage)->withQueryString();
-                // $clients = Client::where('lname','like','%')->paginate($perPage)->withQueryString();
             }else {
             $clients = Client::where($filterBy, 'like', '%'.$filterValue.'%')->paginate($perPage)->withQueryString();}
         } else {
@@ -152,7 +151,7 @@ class ClientController extends Controller
     public function edit(Client $client, Int $page)
     {
         // $page = $page ?? 1;
-        $accounts = $client->accounts()->paginate(5)->withQueryString();
+        $accounts = $client->accounts()->paginate(10)->withQueryString();
 
         return view('clients.edit', [
             'client' => $client,

@@ -30,7 +30,7 @@
                                     </div>
 
                                     <button class="btn btn-primary" type="submit">Save</button>
-                                    <a class="btn btn-warning" href="{{route('client-index',['page'=>$page])}}" class="btn-red" >Cancel</a>
+                                    <a class="btn btn-warning" href="{{route('client-index',['page'=>$page])}}" class="btn-red" >Close</a>
                                     @method('put')
                                     @csrf
                                 </form>
@@ -70,14 +70,14 @@
                                                 <a class="btn btn-success" href="{{route('account-edit', ['account'=>$account, 'client'=>$client])}}" >
                                                     Edit
                                                 </a>
-                                                <a class="btn btn-danger" href="{{route('client-delete', ['client'=>$client])}}" >
+                                                <a class="btn btn-danger" href="{{route('account-delete', ['account'=>$account])}}" >
                                                     Delete
                                                 </a>
                                             </div>
                                         </div>
                                     </li>
                                 </ul>
-                                
+
                                 @empty
                                 <li class="list-group-item">
                                     <p class="text-center">No accounts yet</p>

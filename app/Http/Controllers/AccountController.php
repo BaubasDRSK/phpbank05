@@ -24,7 +24,7 @@ class AccountController extends Controller
     public function create(Request $request)
     {
         $client = Client::find($request->client);
-        
+
         $account = new Account;
         $account->client_id = $client->id;
         $account->iban = generateLithuanianIBAN();
@@ -32,7 +32,7 @@ class AccountController extends Controller
         $account->save();
         return redirect()->back()
         ->with('success', 'New account was added!');
-       
+
     }
 
     /**
@@ -60,9 +60,9 @@ class AccountController extends Controller
           [
             'account'=>$account,
             'client'=>$client
-          ]  
+          ]
           );
-        
+
     }
 
     /**
@@ -91,12 +91,21 @@ class AccountController extends Controller
             if ($request->minus && $request->amount <= $account->balance){
                 $newAmount = $account->balance - $request->amount;
             }
-    
+
             $account->balance = $newAmount;
             $account->save();
             return redirect()
             ->back()
-            ->with('success', 'New color has been added!');
+            ->with('success', 'New account has been added!');
+    }
+
+    public function delete(Account $account)
+    {
+        if ($account->balance != 0){
+            return redirect()->back()->withErrors(['Balance not 0, account canot be deleted!']);
+        }
+        $account->delete();
+        return redirect()->back()->with('success', 'Account has been deleted!');
     }
 
     /**

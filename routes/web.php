@@ -51,7 +51,7 @@ Route::prefix('accounts')->name('account-')->group(function () {
     Route::get('/edit/{account}&{client}' ,[Acc::class, 'edit'])->name('edit');
     Route::put('/{account}', [Acc::class, 'update'])->name('update');
 
-    //Route::get('/delete/{client}' ,[Clnt::class, 'delete'])->name('delete');
+    Route::get('/delete/{account}' ,[Acc::class, 'delete'])->name('delete');
     //Route::delete('/{client}', [Clnt::class, 'destroy'])->name('destroy');
 });
 
