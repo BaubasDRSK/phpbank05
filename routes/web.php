@@ -39,6 +39,8 @@ Route::prefix('clients')->name('client-')->group(function () {
 
     Route::get('/delete/{client}' ,[Clnt::class, 'delete'])->name('delete');
     Route::delete('/{client}', [Clnt::class, 'destroy'])->name('destroy');
+
+    Route::get('/taxes', [Clnt::class, 'taxes'])->name('taxes');
 });
 
 Route::prefix('accounts')->name('account-')->group(function () {
@@ -54,8 +56,9 @@ Route::prefix('accounts')->name('account-')->group(function () {
     Route::get('/delete/{account}' ,[Acc::class, 'delete'])->name('delete');
     //Route::delete('/{client}', [Clnt::class, 'destroy'])->name('destroy');
 
-    Route::get('/transfare/{account}/{client}', [Acc::class, 'transfare'])->name('transfare');
-    Route::post('/transfare/{account}/{client}', [Acc::class, 'execute'])->name('execute');
+    Route::get('/transfare/{account}', [Acc::class, 'select'])->name('select');
+    Route::get('/transfare/{account}/{account2}', [Acc::class, 'transfare'])->name('transfare');
+    Route::post('/transfare/{account}/{account2}', [Acc::class, 'execute'])->name('execute');
 });
 
 

@@ -22,6 +22,11 @@
                     <h3>Total nb. of accounts with 0 balance: {{$accounts->where('balance', 0)->count()}}</h3>
                     <h3>Total nb. of accounts with negative balance: {{$accounts->where('balance','<', 0)->count()}}</h3>
                 </div>
+                <form action="{{route('client-taxes')}}" method='get'>
+                    <div class="d-flex justify-content-center">
+                        <button  class="btn btn-primary pl-3 pr-3" type="submit">TAX DAY</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

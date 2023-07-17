@@ -60,7 +60,7 @@
                                 <div>
                                     <div class="d-flex">
                                         <div class="ms-2">
-                                            <div>{{$client->fname}} {{$client->lname}} / PID: {{$client->pid}}/ Total accounts [{{$client->accounts()->count()}}] / Total balance [{{$client->accounts()->sum('balance')}}]</div>
+                                            <div><h5 class="fw-bold text-primary">{{$client->fname}} {{$client->lname}}</h5> PID: {{$client->pid}}/ Total accounts [{{$client->accounts()->count()}}] / Total balance [{{$client->accounts()->sum('balance')}}]</div>
 
                                         </div>
                                     </div>

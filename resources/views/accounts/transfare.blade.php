@@ -10,20 +10,21 @@
 
                     <div class="container">
                         <div class="row justify-content-center">
-                            <form class='col-4' action="{{route('account-execute', ['account'=>$account, 'client'=>$client])}}" method="post" class="login-form">
+                            <form class='col-4' action="{{route('account-execute', ['account'=>$account, 'account2'=>$account2])}}" method="post" class="login-form">
                                 <h4 class="main-h">Please fill transfare details</h4>
 
                                     <div class="input mb-4">
                                         <label class="mr-3" for="fname">Transfare from</label>
+                                        <p class="mr-3">Owner: {{$account->client->fname}} {{$account->client->lname}}</p>
                                         <p class="mr-3">Curent balance: {{$account->balance}}</p>
-                                        {{-- <img src="/img/person.svg" alt="fname"> --}}
                                         <p class="form-control">{{$account->iban}} </p>
                                     </div>
 
                                     <div class="input mb-4">
-                                        <label  class="mr-3" for="iban2">Transfare to (please input recievers IBAN):</label>
-                                        {{-- <img src="/img/person.svg" alt="lname"> --}}
-                                        <input  class="form-control" type="text" name="iban2" id="iban2" placeholder="Enter recievers IBAN" maxlength="18" value="{{old('iban2')}}" required>
+                                        <label  class="mr-3" for="iban2">Transfare to:</label>
+                                        <p class="mr-3">Owner: {{$account2->client->fname}} {{$account->client->lname}}</p>
+                                        <p class="mr-3">Curent balance: {{$account2->balance}}</p>
+                                        <p class="form-control">{{$account2->iban}} </p>
                                     </div>
 
                                     <div class="input mb-4">
@@ -33,7 +34,7 @@
                                     </div>
 
                                     <button class="btn btn-primary" type="submit">Transfare</button>
-                                    <a class="btn btn-warning" href="{{route('client-edit',[$client, 1])}}" class="btn-red" >Cancel</a>
+                                    <a class="btn btn-warning" href="{{route('client-edit',[$account->client->id, 1])}}" class="btn-red" >Cancel / Close</a>
                                     @csrf
                                 </form>
                         </div>

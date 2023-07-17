@@ -117,39 +117,30 @@ class AccountController extends Controller
         //
     }
 
-    public function transfare(Account $account, Client $client)
+    public function transfare(Account $account, Account $account2)
     {
         return view('accounts.transfare',
         [
           'account'=>$account,
-          'client' => $client
+          'account2'=>$account2
         ]
         );
     }
 
-    public function execute(Account $account, Request $request, Client $client)
+    public function execute(Account $account, Account $account2, Request $request)
     {
         $validator = Validator::make(
             $request->all(),[
                 'amount' => 'required|regex:/^\d+(\.\d{1,2})?$/',
-                'iban2' => 'required|regex:/^LT\d{16}/'
             ],
             [
                 'amount.required' => '??',
-                'amount.regex' => 'Check amount',
-                'iban2.required' => '??',
-                'iban2.regex' => 'Check IBAN'
+                'amount.regex' => 'Check amount'
             ]);
 
             if ($validator->fails()) {
                 $request->flash();
                 return redirect()->back()->withErrors($validator);
-            }
-
-            $account2 = Account::where('iban','=',$request->iban2)->first();
-
-            if (is_null($account2)){
-                return redirect()->back()->withErrors('Recievers Account does not exist!');
             }
 
             if ($account->balance >= $request->amount){
@@ -161,6 +152,20 @@ class AccountController extends Controller
             }
             return redirect()->back()->withErrors('Balance is not sufficient');
     }
+
+    public function select(Account $account)
+    {
+        if($account->balance <= 0 ){
+            return redirect()->back()->withErrors(['Insuficient balance to transfare!']);
+        } 
+        
+        $accounts = Account::whereNotIn('id',[$account->id])->orderBy('client_id', 'asc')->get();
+        return view('accounts.list',[
+            'account' => $account,
+            'accounts' => $accounts
+        ]);
+    }
+
 }
 
 

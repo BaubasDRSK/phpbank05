@@ -11,22 +11,26 @@ use Illuminate\Support\Collection;
 
 
 class ClientController extends Controller
-{
+{   
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
         // $clients = Client::all();
-        $sortBy = $request->sort_by ?? '';
-        $orderBy = $request->order_by ?? '';
-        if ($orderBy && !in_array($orderBy, ['asc', 'desc'])) { $orderBy = ''; }
-
+        $sortBy = 'lname';
+        $orderBy = 'asc';
+        
         $filterBy = $request->searchBy ?? 'fname';
         $filterValue = $request->searchFor ?? '';
 
-        $perPage = (int) $request->per_page ?? 5;
-        $perPage = $perPage == 0 ? 5 : $perPage;
+        $perPage = (int) $request->per_page ?? 20;
+        $perPage = $perPage == 0 ? 20 : $perPage;
 
         if ($request->s) {
             if ($filterBy == 'iban'){
@@ -233,4 +237,33 @@ class ClientController extends Controller
         ->route('client-index')
         ->with('success', 'Client has been deleted!');
     }
+
+    public function taxes()
+    {
+        $clients = Client::all();
+        $ids = $clients->pluck('id')->toArray();
+        $sum = 0;
+        $count = 0;
+        $clientNoAcc = 0;
+
+        foreach ($ids as $id){
+            $account = Account::where('client_id', $id)->first();
+                if(!is_null($account)){
+                    $account->balance -= 5;
+                    $account->save();
+                    $sum += 5;
+                    $count ++;
+                } else {
+                    $clientNoAcc ++;
+                }
+        }
+        
+        $accounts = Account::all();
+        return redirect()->back()->with('success','Total '.$sum.' € tax payed from '.$count.' Clients. '. $clientNoAcc.' Clients with no accounts');
+        
+
+    }
+
+
+
 }
