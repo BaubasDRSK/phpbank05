@@ -11,7 +11,7 @@ use Illuminate\Support\Collection;
 
 
 class ClientController extends Controller
-{   
+{
 
     public function __construct()
     {
@@ -25,7 +25,7 @@ class ClientController extends Controller
         // $clients = Client::all();
         $sortBy = 'lname';
         $orderBy = 'asc';
-        
+
         $filterBy = $request->searchBy ?? 'fname';
         $filterValue = $request->searchFor ?? '';
 
@@ -38,7 +38,7 @@ class ClientController extends Controller
                 $ids = $accounts->pluck('client_id')->toArray();
                 $clients = Client::whereIn('id', $ids)->paginate($perPage)->withQueryString();
             }else {
-            $clients = Client::where($filterBy, 'like', '%'.$filterValue.'%')->paginate($perPage)->withQueryString();}
+            $clients = Client::where($filterBy, 'like', '%'.$filterValue.'%')->orderBy('lname', $orderBy)->paginate($perPage)->withQueryString();}
         } else {
 
             // $clients = Client::all();
@@ -257,10 +257,10 @@ class ClientController extends Controller
                     $clientNoAcc ++;
                 }
         }
-        
+
         $accounts = Account::all();
         return redirect()->back()->with('success','Total '.$sum.' € tax payed from '.$count.' Clients. '. $clientNoAcc.' Clients with no accounts');
-        
+
 
     }
 
